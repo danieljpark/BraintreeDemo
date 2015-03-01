@@ -5,4 +5,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="credit_card_input">Credit Card Number:</string>
+    <string name="cvv_input">CVV:</string>
+    <string name="expiration_date_input">Expiration Date:</string>
+    <string name="submit">Submit</string>
+
 </resources>
