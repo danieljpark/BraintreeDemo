@@ -1,8 +1,9 @@
 package com.example.dev_daniel.braintreedemo.inputValidation;
 
-import com.example.dev_daniel.braintreedemo.model.NetworkName;
+import android.util.Log;
 
-import java.lang.reflect.Array;
+import com.example.dev_daniel.braintreedemo.data.NetworkName;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,8 +13,10 @@ import java.util.HashMap;
 public class CardValidator {
 
     public static HashMap<NetworkName, ArrayList<ArrayList<Integer>>> cardNetworksIIN;
-
+    private static String TAG = CardValidator.class.getName();
+    public static void init(){} //tells jvm to run static
     static{
+        cardNetworksIIN = new HashMap<>();
         /** Amex **/ //34, 37
         ArrayList<ArrayList<Integer>> amex = new ArrayList<>();
 
@@ -84,8 +87,57 @@ public class CardValidator {
 
 
     public static NetworkName identifyNetwork(String inputNum){
-
+        NetworkName match = NetworkName.UNKNOWN;
         //return network name
+
+        //iterate through all values and find out which one
+        for (NetworkName key : cardNetworksIIN.keySet()){
+            ArrayList<ArrayList<Integer>> supportedIINs = cardNetworksIIN.get(key);
+            //get the values and check each one;
+            for(ArrayList<Integer> numberCheck : supportedIINs){
+                int digitsRequiredForChecking = 0;
+                if(numberCheck.size()==1) {
+                        //single number
+                    String iin =  Integer.toString(numberCheck.get(0));
+                    digitsRequiredForChecking = iin.length();
+
+                    //check first few digits
+                    String inputFirstFew = inputNum.substring(0, digitsRequiredForChecking);
+                    Log.i(TAG, "This is digits required for checking " + digitsRequiredForChecking);
+                    Log.i(TAG, "THis is input first few " + inputFirstFew);
+                    if(iin.equals(inputFirstFew)){
+                        //we have a match
+                        match = key;
+                        return match;
+                    }
+
+                } else if(numberCheck.size()==2) {
+                    //its an interval
+                    //check interval;
+
+
+                    int lowerBound = numberCheck.get(0);
+                    int upperBound = numberCheck.get(1);
+                    Log.i(TAG, "We are in " + key.getFriendlyName()+ " network and lower bound: " + lowerBound + " and upper bound: " + upperBound);
+                    //extract first few digits from inputNum using lowerBound
+                    int lowBoundDigitLen= (int)(Math.log10(lowerBound)+1);
+
+                    int checkingNum = Integer.parseInt(inputNum.substring(0, lowBoundDigitLen)); // this is the extracted digit
+                    if(checkingNum>=lowerBound && checkingNum<=upperBound){
+                        match = key;
+                        return match;
+                    }
+
+
+                }
+
+
+            }
+
+
+        }
+
+        return match;
     }
 
 }
