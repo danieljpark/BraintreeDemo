@@ -210,10 +210,11 @@ public class MainActivity extends ActionBarActivity {
             String inputMonth = enteredExp.substring(0,2);
             String inputYear = enteredExp.substring(3);
 
-            if(!Integer.toString(currentYear).substring(2).equals(inputYear)){
+            int inputYearInt = Integer.parseInt(inputYear) + 2000; //only handles 21century
+            if(inputYearInt < currentYear){
                 errorLog.append("Please enter valid year. ");
             }
-            if(Integer.parseInt(inputMonth)<currentMonth){
+            if(Integer.parseInt(inputMonth)<currentMonth && inputYearInt == currentYear){
                 errorLog.append("Please enter valid month. ");
             }
 
@@ -272,7 +273,7 @@ public class MainActivity extends ActionBarActivity {
     private void showErrorMessage(String errorMsg){
 
         new AlertDialog.Builder(this)
-                .setTitle("Hmm...Error")
+                .setTitle("Hmm...Try Again")
                 .setMessage(errorMsg)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

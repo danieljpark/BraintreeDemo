@@ -8,6 +8,7 @@ BBBBBB  rr      aaa aa iii nn   nn  tttt rr      eeeee  eeeee    DDDDDD   eeeee 
 @date : March 7, 2015
 
 =UX=
+
 -When you first launch the app, the credit card field will have blinking cursor to prompt you to enter credit card number. Upon completing 15 digits, it will check if it is Amex number. If it is, then the card logo changes to amex. If the user enters the 16th digit, then it checks whether it is mastercard, visa or discover or JCB, and updates the logo perspectively. If the number does not match any of these networks, just show generic card logo.
 
 -Then the user taps on expiration edit text and enters in the date. The date cannot be from the past from current systemtime. 
@@ -18,6 +19,9 @@ BBBBBB  rr      aaa aa iii nn   nn  tttt rr      eeeee  eeeee    DDDDDD   eeeee 
 
 
 =Testing=
+
 To run the tests: right click on braintreedemo.ApplicationTest and run "ApplicationTest"
 -test coverage:
+   5 Card network identification tests
    5 luhn validation checks
+TODO: add more tests on cvv and date
