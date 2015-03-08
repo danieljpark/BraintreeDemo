@@ -32,6 +32,13 @@ public class  ApplicationTest extends ApplicationTestCase<Application> {
         assertEquals(NetworkName.MASTERCARD, CardValidator.identifyNetwork("5555555555554444"));
         assertEquals(NetworkName.VISA, CardValidator.identifyNetwork("4111111111111111"));
 
+        //counters
+        assertEquals(NetworkName.UNKNOWN, CardValidator.identifyNetwork("381449635398431"));
+        assertEquals(NetworkName.UNKNOWN, CardValidator.identifyNetwork("7011111111111117"));
+        assertEquals(NetworkName.UNKNOWN, CardValidator.identifyNetwork("3590111333300000"));
+        assertEquals(NetworkName.UNKNOWN, CardValidator.identifyNetwork("5955555555554444"));
+        assertEquals(NetworkName.UNKNOWN, CardValidator.identifyNetwork("9111111111111111"));
+
 
     }
 

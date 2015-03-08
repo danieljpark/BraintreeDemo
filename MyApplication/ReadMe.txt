@@ -24,4 +24,4 @@ To run the tests: right click on braintreedemo.ApplicationTest and run "Applicat
 -test coverage:
    5 Card network identification tests
    5 luhn validation checks
-TODO: add more tests on cvv and date
+ 

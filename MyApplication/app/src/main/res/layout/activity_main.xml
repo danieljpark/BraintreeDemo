@@ -30,7 +30,7 @@
         android:id="@+id/card_logo_imageView"
         android:layout_alignTop="@+id/textView"
         android:layout_toRightOf="@+id/credit_card_editText"
-        android:layout_toEndOf="@+id/credit_card_editText" />
+         />
 
     <Button
         android:layout_width="wrap_content"
