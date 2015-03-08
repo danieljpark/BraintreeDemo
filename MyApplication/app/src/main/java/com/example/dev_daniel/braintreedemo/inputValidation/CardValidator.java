@@ -140,4 +140,31 @@ public class CardValidator {
         return match;
     }
 
+    public static boolean luhnValidation(String cardNum){
+
+        boolean isEveryOtherNum = false;
+        int runningSum = 0;
+        int endDigit = cardNum.length() - 1;
+        //count from the end
+        for (int i = endDigit; i>=0; i-- ) {
+            int currentNum = Integer.parseInt(cardNum.substring(i, i+1));
+            if (isEveryOtherNum) {
+                //double that number
+                currentNum *= 2;
+                //if over 9
+                if (currentNum > 9) currentNum = (currentNum % 10) + 1;
+
+            }
+            runningSum += currentNum;
+            //toggle isEveryOtherNum
+            isEveryOtherNum = !isEveryOtherNum;
+
+
+        }
+        boolean result = (runningSum%10 == 0);
+        return result;
+
+
+    }
+
 }

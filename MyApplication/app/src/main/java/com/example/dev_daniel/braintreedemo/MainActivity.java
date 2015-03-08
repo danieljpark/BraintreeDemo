@@ -26,7 +26,7 @@ import java.util.TooManyListenersException;
 
 
 public class MainActivity extends ActionBarActivity {
-
+    //TODO: test IIN and then write luhn
     private static final int MAX_CARD_INPUT_LENGTH = 16; //16 max plus 3 spaces for every 4 digits
     private static final int MIN_CARD_INPUT_LENGTH = 15;
     private static final int MAX_EXP_INPUT_LENGTH = 5;
@@ -181,7 +181,7 @@ public class MainActivity extends ActionBarActivity {
     private void handleSubmit(){
         StringBuilder errorLog = new StringBuilder();
         /** card num validation **/
-        //perform luhn validation
+
         String enteredCardNumber = creditCardEditText.getText().toString();
         //validate credit card num
         int numLen = enteredCardNumber.length();
@@ -189,10 +189,16 @@ public class MainActivity extends ActionBarActivity {
             errorLog.append("Please enter a credit card number. ");
         } else if(numLen < MIN_CARD_INPUT_LENGTH){
             errorLog.append("Missing some digits of credit card. ");
+        } else {
+            boolean luhnValidationPassed = CardValidator.luhnValidation(enteredCardNumber);
+            if(!luhnValidationPassed){
+                errorLog.append("Invalid credit card number. Please check the digits. ");
+
+            }
         }
+        //perform luhn validation
 
         /** exp date validation **/
-        //TODO: check that the date is future from now
         String enteredExp = expEditText.getText().toString();
         int expLen = enteredExp.length();
         if(expLen < MAX_EXP_INPUT_LENGTH){
