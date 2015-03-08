@@ -22,6 +22,7 @@ BBBBBB  rr      aaa aa iii nn   nn  tttt rr      eeeee  eeeee    DDDDDD   eeeee 
 
 To run the tests: right click on braintreedemo.ApplicationTest and run "ApplicationTest"
 -test coverage:
-   5 Card network identification tests
+   
+   10 Card network identification tests
    5 luhn validation checks
  
