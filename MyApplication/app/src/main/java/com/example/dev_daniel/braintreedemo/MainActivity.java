@@ -42,6 +42,8 @@ public class MainActivity extends ActionBarActivity {
     EditText cvvEditText;
 
 
+    /** state vars **/
+    private boolean isAmex = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,8 @@ public class MainActivity extends ActionBarActivity {
     /*** Sets up the initial buttons & ui ***/
     private void initialUISetup(){
         //set as generic at first
-        cardLogoImageSetup();
+        cardLogoImageView = (ImageView) findViewById(R.id.card_logo_imageView);
+        showGenericCardLogo();
 
         /** card edit text **/
         cardEditTextSetup();
@@ -72,13 +75,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    /** card logo **/
-    private void cardLogoImageSetup(){
 
-        cardLogoImageView = (ImageView) findViewById(R.id.card_logo_imageView);
-        cardLogoImageView.setImageResource(R.drawable.generic_card_2x);
-
-    }
     /** card edit text **/
     private void cardEditTextSetup(){
 
@@ -97,10 +94,10 @@ public class MainActivity extends ActionBarActivity {
                 //TODO: fix
                 creditCardEditText.getText().insert(start, " ");
                 if(charLen == 0){
-                    cardLogoImageSetup();
+                    showGenericCardLogo();
                 }
                 if(charLen == MAX_CARD_INPUT_LENGTH - 1 || charLen == MAX_CARD_INPUT_LENGTH) {
-                    showDigitCardLogo(s);
+                    showNetworkCardLogo(s);
                 }
 
             }
@@ -134,7 +131,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private boolean hasUserEnteredCVV = false;
-    private boolean isAmex = false; //TODO: add CVV len in CardValidator.cardNetworkdsIIN
+
     private void cvvEditTextAndImgSetup(){
 
         cvvImageView = (ImageView) findViewById(R.id.cvv_hint_imageView);
@@ -142,11 +139,10 @@ public class MainActivity extends ActionBarActivity {
         cvvImageView.setVisibility(View.INVISIBLE);
 
         cvvEditText = (EditText) findViewById(R.id.cvv_editText);
-        if(isAmex){
-            cvvEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CVV_INPUT_LENGTH)});
-        } else {
-            cvvEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CVV_INPUT_LENGTH-1)});
-        }
+
+        //by default set cvv limit to 3, unless user enters amex.
+        cvvEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CVV_INPUT_LENGTH-1)});
+
 
 
         cvvEditText.addTextChangedListener(new TextWatcher() {
@@ -196,7 +192,7 @@ public class MainActivity extends ActionBarActivity {
 
             }
         }
-        //perform luhn validation
+
 
         /** exp date validation **/
         String enteredExp = expEditText.getText().toString();
@@ -290,30 +286,68 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    /***
-     * Method for Card Number Validation. Uses Luhn Validation. Changed from int input to string
-     * since the former can cause overflow errors.
-     * ***/
-    public void validateCreditCard(String inputCardNum){
 
+    /** showing card logos for each network **/
 
+    private void showGenericCardLogo(){
 
-
+        cardLogoImageView.setImageResource(R.drawable.generic_card_2x);
 
     }
-
-    public void showAmexLogo(){
+    private void showAmexLogo(){
         cardLogoImageView.setImageResource(R.drawable.amex_2x);
     }
+    private void showMasterCardLogo(){
+        cardLogoImageView.setImageResource(R.drawable.mastercard_2x);
+    }
+    private void showVisaCardLogo(){
+        cardLogoImageView.setImageResource(R.drawable.visa_2x);
+    }
+    private void showDiscoverCardLogo(){
+        cardLogoImageView.setImageResource(R.drawable.discover_2x);
+    }
+    private void showJCBCardLogo(){
+        cardLogoImageView.setImageResource(R.drawable.jcb_2x);
+    }
 
-    public void showDigitCardLogo(CharSequence cardNum){
+
+
+    public void showNetworkCardLogo(CharSequence cardNum){
 
 
         /** logic for determining the iin **/
 
         NetworkName networkName = CardValidator.identifyNetwork(cardNum.toString());
         Log.i(TAG, "this is the network name retrieved from cardvalidator" + networkName);
+        //enums are good for switch
+        switch (networkName){
+            case AMEX:
+                isAmex = true;
+                showAmexLogo();
+                //set the cvv length to 4
+                cvvEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_CVV_INPUT_LENGTH)});
+                break;
+            case MASTERCARD:
+                showMasterCardLogo();
+                break;
+            case VISA:
+                showVisaCardLogo();
+                break;
+            case DISCOVER:
+                showDiscoverCardLogo();
+                break;
+            case JCB:
+                showJCBCardLogo();
+                break;
+            case UNKNOWN:
+                showGenericCardLogo();
+                break;
+            default:
+                //TODO: @Braintree: what do you mean by "Numbers from unknown card networks should bypass all validation rules"?
+                showGenericCardLogo();
+                break;
 
+        }
     }
 
 

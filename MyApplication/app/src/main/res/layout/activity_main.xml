@@ -85,5 +85,15 @@
         android:layout_alignTop="@+id/exp_textView"
         android:layout_above="@+id/cvv_editText" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/cvv_input"
+        android:id="@+id/cvv_textView"
+        android:layout_alignTop="@+id/cvv_hint_imageView"
+        android:layout_alignLeft="@+id/cvv_editText"
+        android:layout_alignStart="@+id/cvv_editText" />
+
 
 </RelativeLayout>
